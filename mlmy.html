@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MinzzStore - Top Up Game</title>
+<style>
+:root {
+  --bg:#0d0f12;--panel:#171a1f;--panel-2:#13171d;--stroke:rgba(255,255,255,.06);
+  --accent:#1f8cff;--accent-2:#0f6bd6;--muted:#9aa4b2;--success:#3ad07e;--error:#ff5c5c;
+  font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:#fff;overflow-x:hidden}
+
+/* topbar */
+.topbar{position:sticky;top:0;z-index:60;background:#12161acc;
+display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--stroke)}
+.brand-logo{font-weight:900;font-size:16px;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+padding:8px 14px;border-radius:999px}
+.menu-btn{width:44px;height:44px;border:none;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+color:#fff;font-size:22px;cursor:pointer}
+
+/* drawer + backdrop */
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:.25s;z-index:69}
+.backdrop.show{opacity:1;pointer-events:auto}
+.sidemenu{position:fixed;top:0;left:0;height:100%;width:min(84vw,360px);background:#0f141a;border-right:1px solid var(--stroke);
+z-index:70;transform:translateX(-100%);transition:transform .28s ease;display:flex;flex-direction:column}
+.sidemenu.show{transform:translateX(0)}
+.menu-head{display:flex;align-items:center;justify-content:space-between;padding:18px 16px;border-bottom:1px solid var(--stroke)}
+.menu-brand{display:flex;align-items:center;gap:12px;font-weight:800}
+.menu-badge{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+background:linear-gradient(135deg,var(--accent),var(--accent-2));font-weight:900}
+.menu-title{opacity:.92}
+.menu-close{background:transparent;border:none;color:#cfe1ff;font-size:22px;cursor:pointer}
+.menu-list{padding:10px 8px;overflow:auto;flex:1}
+.menu-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 10px;border-radius:12px;
+color:#d8e5ff;text-decoration:none}
+.menu-item:hover{background:#121923}
+.menu-left{display:flex;align-items:center;gap:12px}
+.menu-ico{width:20px;height:20px;opacity:.95}
+.menu-sep{height:1px;background:rgba(255,255,255,.08);margin:10px 8px}
+
+/* hero + bintang jatuh */
+.hero{position:relative;overflow:hidden;background:radial-gradient(1200px 420px at 50% -260px,#202635 15%,#141a22 60%,#0c1118 100%);
+border-bottom:1px solid var(--stroke);height:220px;display:flex;align-items:flex-end;padding:18px 16px;gap:14px}
+.hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(31,140,255,.18),transparent 60%);
+pointer-events:none}
+.hero-img{position:absolute;inset:0;opacity:.18;background-size:cover;background-position:center}
+.starfield{position:absolute;inset:0;pointer-events:none}
+.star{--x:10%;--y:-10%;--dur:3.7s;--delay:0s;--len:140px;position:absolute;left:var(--x);top:var(--y);
+width:2px;height:2px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff,0 0 18px var(--accent);
+transform:rotate(-24deg);animation:shoot var(--dur) linear var(--delay) infinite}
+.star::after{content:"";position:absolute;left:-120px;top:0;height:2px;width:var(--len);
+background:linear-gradient(90deg,rgba(255,255,255,0),#fff 60%,rgba(255,255,255,.3));filter:drop-shadow(0 0 4px var(--accent-2))}
+@keyframes shoot{0%{transform:translate3d(0,0,0) rotate(-24deg);opacity:0}
+8%{opacity:1}100%{transform:translate3d(650px,300px,0) rotate(-24deg);opacity:0}}
+.hero-card{position:relative;display:flex;align-items:center;gap:14px}
+.hero-thumb{width:72px;height:72px;border-radius:16px;overflow:hidden;border:1px solid var(--stroke)}
+.hero-thumb img{width:100%;height:100%;object-fit:cover}
+.hero-title{font-weight:900;font-size:18px}
+.hero-bullets{font-size:13px;color:#a9b6cc;margin-top:4px}
+
+/* content */
+.container{padding:16px 16px 120px}
+.section-title{font-weight:800;font-size:15px;margin:20px 0 10px}
+.form{background:#171a1f;border:1px solid var(--stroke);border-radius:14px;padding:14px}
+label{font-size:13px;color:#9fb4ff;display:block;margin-top:8px}
+.input{width:100%;margin-top:4px;background:#0f1317;border:1px solid var(--stroke);border-radius:10px;padding:10px 12px;color:#eaf2ff;font-size:13px;outline:none}
+.input:focus{border-color:var(--accent)}
+
+/* grid produk */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{background:#d6d1d1;color:#111;border-radius:12px;padding:12px;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between;transition:.15s}
+.card:hover{transform:translateY(-3px)}
+.card.selected{outline:2px solid var(--accent)}
+.price-old{text-decoration:line-through;color:#e74a4a;font-size:13px;font-weight:700}
+.price-now{font-weight:800;font-size:14px}
+
+/* pembayaran */
+.paywrap {
+  background:#171a1f;
+  border:1px solid var(--stroke);
+  border-radius:14px;
+  padding:8px;
+  margin-top:8px;
+}
+.paycard {
+  position:relative;
+  background:#121821;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.1);
+  padding:14px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  transition:.2s;
+  height:65px;
+}
+.paycard:hover {
+  transform:translateY(-2px);
+  border-color:var(--accent);
+}
+.paycard.selected {
+  box-shadow:0 0 0 2px var(--accent);
+}
+.pay-head {
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.pay-head img {
+  width:38px;
+  height:38px;
+  border-radius:8px;
+}
+.pay-title {
+  font-weight:800;
+  font-size:16px;
+}
+.pay-balance {
+  font-weight:700;
+  color:#79aefe;
+  font-size:14px;
+}
+
+/* bottom bar */
+.bottom-order{position:fixed;left:0;right:0;bottom:0;z-index:80;background:rgba(13,17,25,0.95);
+backdrop-filter:blur(10px);border-top:1px solid var(--stroke);padding:12px 16px;display:flex;flex-direction:column;gap:10px}
+.cart{color:#a9c6ff;text-align:center;font-weight:600;font-size:14px}
+.btn-order{width:100%;padding:15px;border:none;border-radius:14px;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+color:#fff;font-weight:900;font-size:15px;cursor:pointer;box-shadow:0 6px 20px rgba(31,140,255,.3)}
+.btn-order:active{transform:scale(.98)}
+</style>
+</head>
+
+<body>
+
+<!-- top bar -->
+<div class="topbar">
+  <div class="brand-logo">Minzz Salvatore</div>
+  <button class="menu-btn" id="openMenu">☰</button>
+</div>
+
+<!-- drawer -->
+<div class="backdrop" id="backdrop"></div>
+<aside class="sidemenu" id="sideMenu">
+  <div class="menu-head">
+    <div class="menu-brand"><div class="menu-badge">MS</div><div class="menu-title">MinzzStore</div></div>
+    <button class="menu-close" id="closeMenu">×</button>
+  </div>
+  <nav class="menu-list">
+    <a class="menu-item" href="#"><span class="menu-left">🏠 Beranda</span></a>
+    <a class="menu-item" href="#"><span class="menu-left">🔍 Cek Transaksi</span></a>
+    <a class="menu-item" href="#"><span class="menu-left">🏆 Leaderboard</span></a>
+    <a class="menu-item" href="#"><span class="menu-left">📰 Artikel</span></a>
+    <a class="menu-item" href="#"><span class="menu-left">💲 Daftar Harga</span></a>
+    <a class="menu-item" href="#"><span class="menu-left">🧮 Kalkulator ML</span></a>
+    <div class="menu-sep"></div>
+    <a class="menu-item" href="#"><span class="menu-left">🔑 Masuk</span></a>
+    <a class="menu-item" href="#"><span class="menu-left">👤 Daftar</span></a>
+  </nav>
+</aside>
+
+<!-- hero -->
+<section class="hero">
+  <div class="hero-img" style="background-image:url('https://f.top4top.io/p_3590rghr70.png')"></div>
+  <div class="starfield">
+    <span class="star" style="--x:6%; --y:-8%;  --dur:3.6s; --delay:.2s;  --len:130px"></span>
+    <span class="star" style="--x:14%;--y:-10%; --dur:3.5s; --delay:.7s;  --len:125px"></span>
+    <span class="star" style="--x:24%;--y:-12%; --dur:3.7s; --delay:.4s;  --len:140px"></span>
+    <span class="star" style="--x:48%;--y:-11%; --dur:3.6s; --delay:.3s;  --len:150px"></span>
+  </div>
+  <div class="hero-card">
+    <div class="hero-thumb"><img src="https://f.top4top.io/p_3590rghr70.png" alt="Mobile Legends"></div>
+    <div>
+      <div class="hero-title">MOBILE LEGENDS</div>
+      <div class="hero-bullets">⚡ Proses Cepat • 💬 CS 24/7 • 🌍 Region Global</div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <h3 class="section-title">Lengkapi Data Akun</h3>
+  <div class="form">
+    <label for="uid">ID</label>
+    <input id="uid" class="input" placeholder="Masukkan ID">
+    <label for="sid">Server</label>
+    <input id="sid" class="input" placeholder="Masukkan Server">
+  </div>
+
+  <h3 class="section-title">Pilih Nominal</h3>
+  <div class="grid">
+    <div class="card"><h4>3 Diamond</h4><div><span class="price-old">Rp1.114</span> <span class="price-now">Rp1.041</span></div></div>
+    <div class="card"><h4>5 Diamond</h4><div><span class="price-old">Rp1.538</span> <span class="price-now">Rp1.437</span></div></div>
+  </div>
+
+  <h3 class="section-title">Metode Pembayaran</h3>
+  <div class="paywrap">
+    <div id="minzzCard" class="paycard">
+      <div class="pay-head">
+        <img src="https://b.top4top.io/p_3590p763q0.png" alt="MinzzCash">
+        <div>
+          <div class="pay-title">Minzz-Cash</div>
+          <div class="pay-balance">Baki: RM 0.00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <label for="phone" class="section-title" style="margin-top:14px">No. Telefon (+60)</label>
+  <input id="phone" class="input" placeholder="+60XXXXXXXXX" value="+60" inputmode="numeric" autocomplete="tel">
+</div>
+
+<div class="bottom-order">
+  <div id="cart" class="cart">Tidak ada produk yang dipilih</div>
+  <button class="btn-order" id="btnOrder">🛍️ Pesan Sekarang!</button>
+</div>
+
+<script>
+// Drawer Menu
+const sideMenu=document.getElementById('sideMenu');
+const backdrop=document.getElementById('backdrop');
+document.getElementById('openMenu').onclick=()=>{sideMenu.classList.add('show');backdrop.classList.add('show');};
+document.getElementById('closeMenu').onclick=()=>{sideMenu.classList.remove('show');backdrop.classList.remove('show');};
+backdrop.onclick=()=>{sideMenu.classList.remove('show');backdrop.classList.remove('show');};
+
+// Produk
+const cards=[...document.querySelectorAll('.card')];
+let selectedProduct=null;
+const cart=document.getElementById('cart');
+cards.forEach(c=>{
+  c.onclick=()=>{
+    cards.forEach(x=>x.classList.remove('selected'));
+    c.classList.add('selected');
+    selectedProduct=c;
+    cart.textContent=`${c.querySelector('h4').textContent} — ${c.querySelector('.price-now').textContent}`;
+  };
+});
+
+// Payment
+const minzzCard=document.getElementById('minzzCard');
+minzzCard.onclick=()=>{minzzCard.classList.toggle('selected');};
+</script>
+</body>
+</html>
