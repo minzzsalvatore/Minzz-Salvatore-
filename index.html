@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MinzzStore - Top Up Game</title>
+<style>
+:root {
+  --bg: #06090f;
+  --card: #0b1118;
+  --muted: #b8c7d9;
+  --accent: #1f8cff;
+  --accent-dark: #0f67c2;
+  --radius: 18px;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; background: var(--bg); color: #fff; }
+
+/* HEADER */
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 16px;
+  background: linear-gradient(90deg, rgba(31,140,255,0.08), rgba(31,140,255,0.02));
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  position: sticky; top: 0; z-index: 30; backdrop-filter: blur(8px);
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo .mark {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: #fff; font-size: 18px;
+  box-shadow: 0 0 18px rgba(31,140,255,0.3);
+}
+.logo span { font-weight: 700; color: var(--muted); letter-spacing: 0.4px; }
+.menu-btn { font-size: 24px; cursor: pointer; }
+
+/* ===== NAV MENU (Drawer) ===== */
+.nav-backdrop{
+  position: fixed; inset: 0; background: rgba(0,0,0,.5);
+  opacity: 0; pointer-events: none; transition: .25s ease; z-index: 40;
+}
+.nav-backdrop.active{ opacity: 1; pointer-events: auto; }
+
+.nav-menu {
+  position: fixed; top: 0; left: -100%;
+  width: 78%; max-width: 420px; height: 100%;
+  background: #0b1118;
+  box-shadow: 4px 0 24px rgba(0,0,0,.45);
+  transition: .3s ease; z-index: 50;
+  display: flex; flex-direction: column;
+}
+.nav-menu.active { left: 0; }
+.nav-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 18px 16px; border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.nav-title{ display:flex; align-items:center; gap:10px; font-weight:700; color:#cfd9e8; }
+.nav-close{ font-size:22px; cursor:pointer; color:#cfd9e8; }
+.nav-list{ padding: 8px 8px 16px; overflow-y: auto; }
+.nav-section{ padding: 6px 8px; }
+.nav-item{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:14px; padding: 12px 10px; border-radius: 12px;
+  color:#cfd9e8; text-decoration:none; transition:.2s;
+}
+.nav-item:hover{ background: rgba(255,255,255,.04); color:#fff; }
+.nav-item .left{ display:flex; align-items:center; gap:12px; }
+.nav-icon{ width:20px; height:20px; opacity:.9; }
+.nav-divider{ height:1px; margin: 10px 8px; background: rgba(255,255,255,.08); }
+
+/* MAIN */
+main { padding: 18px; }
+
+/* BANNER */
+.banner {
+  width: 100%; height: 150px;
+  border-radius: 18px; overflow: hidden; margin-bottom: 18px;
+  background: url('https://i.top4top.io/p_35799fodf0.jpg') center/cover no-repeat;
+  box-shadow: 0 0 25px rgba(31,140,255,0.15);
+}
+
+/* SEARCH */
+.search-wrap { display: flex; align-items: center; margin-bottom: 22px; }
+.search {
+  flex: 1; background: var(--card); border-radius: 50px;
+  padding: 14px 18px; display: flex; align-items: center; gap: 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: inset 0 0 10px rgba(31,140,255,0.05);
+}
+.search input {
+  flex: 1; background: transparent; border: 0; outline: none;
+  color: #e6f0ff; font-size: 15px;
+}
+
+/* GRID POPULER */
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+a.card {
+  text-decoration: none; border-radius: 14px; overflow: hidden;
+  background: linear-gradient(180deg, rgba(31,140,255,0.05), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 0 20px rgba(31,140,255,0.12);
+  transition: all 0.3s ease;
+}
+a.card:hover { transform: translateY(-4px); box-shadow: 0 6px 25px rgba(31,140,255,0.25); }
+.card .thumb { height: 85px; background-size: cover; background-position: center; }
+.card .meta { padding: 10px 12px; }
+.game-title { font-weight: 700; font-size: 14px; color: #fff; margin-bottom: 4px; }
+.game-sub { font-size: 13px; color: var(--accent); font-weight: 700; }
+
+/* KATEGORI */
+.category-bar {
+  display: flex; align-items: center; gap: 10px;
+  overflow-x: auto; padding-bottom: 10px; margin: 25px 0 18px;
+}
+.category-bar::-webkit-scrollbar { display: none; }
+.cat-btn {
+  white-space: nowrap; padding: 10px 18px; border-radius: 12px;
+  border: none; font-weight: 600; cursor: pointer; font-size: 14px;
+  background: #1a1f2b; color: #fff; transition: 0.3s;
+}
+.cat-btn.active { background: var(--accent); color: #fff; }
+.cat-nav {
+  background: var(--accent); color: #fff; border: none;
+  border-radius: 10px; width: 38px; height: 38px;
+  font-size: 18px; cursor: pointer;
+}
+
+/* GRID PRODUK */
+.games-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; transition: 0.3s; }
+.game-box {
+  position: relative;  /* untuk tag */
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 14px; overflow: hidden;
+  box-shadow: 0 0 15px rgba(31,140,255,0.15);
+  transition: 0.3s;
+}
+.game-box:hover { transform: translateY(-5px); box-shadow: 0 6px 25px rgba(31,140,255,0.3); }
+
+/* GAMBAR PRODUK (RASIO 9:16) */
+.thumb-vertical {
+  width: 100%; aspect-ratio: 9/16; background-size: cover; background-position: center;
+  border-radius: 12px; transition: 0.3s; max-height: 160px;
+}
+.thumb-vertical:hover { transform: scale(1.03); filter: brightness(1.1); }
+
+/* === TAG / BADGE === */
+.tag-wrap{
+  position:absolute; top:8px; left:8px;
+  display:flex; gap:6px; flex-wrap:wrap;
+  max-width:calc(100% - 16px); z-index:2;
+}
+.tag{
+  padding:4px 8px; border-radius:999px;
+  font-size:11px; font-weight:800; letter-spacing:.1px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(0,0,0,.35); color:#eaf2ff;
+  backdrop-filter: blur(4px);
+}
+.tag-blue{  background:linear-gradient(180deg,#1f8cff,#0f6bd6);  border-color:rgba(31,140,255,.4); }
+.tag-gold{  background:linear-gradient(180deg,#ffd86a,#eeb54a);   color:#2a1a00; border-color:#e3a837; }
+.tag-green{ background:linear-gradient(180deg,#30e39a,#1bbf7b);  border-color:rgba(27,191,123,.45); color:#041a11; }
+.tag-pink{  background:linear-gradient(180deg,#ff7bd1,#ff49a6);  border-color:rgba(255,73,166,.45); }
+.tag-gray{  background:rgba(255,255,255,.14); }
+
+/* FOOTER */
+footer {
+  margin-top: 40px; background: #0b1118; padding: 40px 20px 25px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.footer-logo .mark {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 18px;
+}
+.footer-columns {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 25px; margin-bottom: 25px;
+}
+.footer-columns h4 { font-size: 15px; color: var(--accent); margin-bottom: 10px; }
+.footer-columns a {
+  display: block; text-decoration: none; color: var(--muted);
+  margin: 5px 0; font-size: 14px; transition: 0.3s;
+}
+.footer-columns a:hover { color: #fff; }
+footer p.copy { text-align: center; font-size: 13px; color: #7f8ca0; margin-top: 20px; }
+
+@media(max-width:600px){
+  .grid { grid-template-columns: repeat(2,1fr); }
+  .games-grid { grid-template-columns: repeat(2,1fr); }
+  .thumb-vertical { max-height: 130px; }
+  .card .thumb { height: 75px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">
+    <div class="mark">MS</div><span>MinzzStore</span>
+  </div>
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+</header>
+
+<!-- Drawer Menu -->
+<div class="nav-backdrop" id="navBackdrop" onclick="toggleMenu()"></div>
+<div class="nav-menu" id="navMenu" aria-hidden="true">
+  <div class="nav-header">
+    <div class="nav-title">
+      <div class="mark" style="width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),var(--accent-dark));font-weight:700;">MS</div>
+      <span>MinzzStore</span>
+    </div>
+    <div class="nav-close" onclick="toggleMenu()">×</div>
+  </div>
+
+  <div class="nav-list">
+    <div class="nav-section">
+      <a class="nav-item" href="dashbord.html">
+        <div class="left">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <span>Beranda</span>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </a>
+
+      <a class="nav-item" href="#">
+        <div class="left">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.6"/><path d="M20 20l-3.8-3.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span>Cek Transaksi</span>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </a>
+
+      <a class="nav-item" href="#">
+        <div class="left">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M5 20V10M12 20V4M19 20v-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span>Leaderboard</span>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </a>
+
+      <a class="nav-item" href="#">
+        <div class="left">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M3 11V7l12-4v12L3 11Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M15 13s2.5 1 4 1 2 .5 2 2-1 2-2 2-4-1-4-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span>Artikel</span>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </a>
+
+      <a class="nav-item" href="#">
+        <div class="left">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M3 12l9-9 9 9-9 9-9-9Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="9" cy="9" r="1.5" fill="currentColor"/></svg>
+          <span>Daftar Harga</span>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </a>
+
+      <a class="nav-item" href="#">
+        <div class="left">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 7h8M8 12h2m4 0h2M8 16h2m4 0h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span>Kalkulator ML</span>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-section">
+      <a class="nav-item" href="#">
+        <div class="left">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" stroke="currentColor" stroke-width="1.6"/><path d="M10 17l5-5-5-5M15 12H3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Masuk</span>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </a>
+
+      <a class="nav-item" href="#">
+        <div class="left">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="7.5" r="3.5" stroke="currentColor" stroke-width="1.6"/><path d="M4 20c1.6-3.5 5-5.5 8-5.5s6.4 2 8 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span>Daftar</span>
+        </div>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none"><path d="M6 12h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="banner"></div>
+
+  <div class="search-wrap">
+    <div class="search">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <circle cx="11" cy="11" r="6" stroke="#9fbff4" stroke-width="1.8"/>
+        <path d="M21 21l-4.35-4.35" stroke="#9fbff4" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <input id="searchInput" type="search" placeholder="Cari produk yang kamu inginkan..." oninput="searchProduct()" />
+    </div>
+  </div>
+
+  <section>
+    <h2>PALING POPULER!</h2>
+    <div class="grid">
+      <a href="mlmy.html" class="card">
+        <div class="thumb" style="background-image:url('https://l.top4top.io/p_3589nd7jo0.jpg')"></div>
+        <div class="meta"><div class="game-title">Mobile Legends</div><div class="game-sub">Moonton</div></div>
+      </a>
+      <a href="ff.html" class="card">
+        <div class="thumb" style="background-image:url('https://k.top4top.io/p_3589r7rdt0.jpg')"></div>
+        <div class="meta"><div class="game-title">Free Fire</div><div class="game-sub">Garena</div></div>
+      </a>
+      <a href="pubg.html" class="card">
+        <div class="thumb" style="background-image:url('https://h.top4top.io/p_3589smr8q0.jpg')"></div>
+        <div class="meta"><div class="game-title">PUBG Mobile</div><div class="game-sub">Tencent</div></div>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <div class="category-bar" id="categoryBar">
+      <button class="cat-nav" onclick="scrollCat(-1)">‹</button>
+      <button class="cat-btn active" onclick="filterCategory('topup')">Topup Game</button>
+      <button class="cat-btn" onclick="filterCategory('mlbb')">Specialist MLBB</button>
+      <button class="cat-btn" onclick="filterCategory('voucher')">Voucher</button>
+      <button class="cat-btn" onclick="filterCategory('membership')">Membership</button>
+      <button class="cat-btn" onclick="filterCategory('tools')">Tools</button>
+      <button class="cat-nav" onclick="scrollCat(1)">›</button>
+    </div>
+
+    <div class="games-grid" id="productGrid"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-logo">
+    <div class="mark">MS</div>
+    <span style="font-weight:700; color:#fff;">MinzzStore</span>
+  </div>
+
+  <div class="footer-columns">
+    <div>
+      <h4>Dukungan</h4>
+      <a href="#">WhatsApp</a>
+      <a href="#">YouTube</a>
+      <a href="#">TikTok</a>
+      <a href="#">Instagram</a>
+    </div>
+    <div>
+      <h4>Peta Situs</h4>
+      <a href="#index.html">Beranda</a>
+      <a href="#status.html">Cek Transaksi</a>
+      <a href="#">Hubungi Kami</a>
+      <a href="#dashbord.html">Dashboard</a>
+    </div>
+    <div>
+      <h4>Legalitas</h4>
+      <a href="#">Kebijakan Privasi</a>
+      <a href="#">Syarat & Ketentuan</a>
+      <a href="#">Tentang Kami</a>
+    </div>
+    <div>
+      <h4>Kemitraan</h4>
+      <a href="#">Daftar Harga</a>
+      <a href="#">Menjadi Reseller</a>
+      <a href="#">Pembuatan Website</a>
+    </div>
+  </div>
+
+  <p class="copy">© 2025 MinzzStore. All rights reserved.</p>
+</footer>
+
+<script>
+/* ==== MENU ==== */
+function toggleMenu(){
+  const menu = document.getElementById('navMenu');
+  const backdrop = document.getElementById('navBackdrop');
+  const active = menu.classList.toggle('active');
+  backdrop.classList.toggle('active', active);
+  menu.setAttribute('aria-hidden', active ? 'false' : 'true');
+}
+
+/* ==== DATA PRODUK + TAG ==== */
+const products = {
+  topup: [
+    { name: "MLBB - Malaysia2", img: "https://l.top4top.io/p_3589nd7jo0.jpg", tags: ["Best Seller","Baru"] },
+    { name: "COD Mobile",        img: "https://l.top4top.io/p_3589nd7jo0.jpg", tags: ["Diskon 20%"] },
+    { name: "Valorant",          img: "https://l.top4top.io/p_3589nd7jo0.jpg", tags: ["Hot"] }
+  ],
+  mlbb: [
+    { name: "Diamond MLBB",     img: "https://i.ibb.co/FsKjrpT/mlbb2.jpg", tags: ["Stok Banyak","Cepat"] },
+    { name: "Joki Rank MLBB",   img: "https://i.ibb.co/PhVDTKj/mlbb.jpg",   tags: ["Aman 100%","Promo"] }
+  ],
+  voucher: [
+    { name: "Google Play", img: "https://i.ibb.co/4T7qhjh/gp-voucher.jpg", tags:["Resmi"] },
+    { name: "Garena",      img: "https://i.ibb.co/LCdztJr/garena.jpg" }
+  ],
+  membership: [
+    { name: "Spotify Premium", img: "https://i.ibb.co/hCtfK3F/spotify.jpg", tags:["Family"] },
+    { name: "Netflix Premium", img: "https://i.ibb.co/3c4G07C/netflix.jpg", tags:["4K","Murah"] }
+  ],
+  tools: [
+    { name: "Script Injector", img: "https://i.ibb.co/2yNchx7/tools1.jpg" },
+    { name: "Anti Lag Pack",   img: "https://i.ibb.co/bszQJkp/tools2.jpg", tags:["Ringan"] }
+  ]
+};
+
+/* ==== RENDERER ==== */
+function tagClass(label){
+  const t = (label||"").toLowerCase();
+  if (t.includes("best") || t.includes("hot"))     return "tag-gold";
+  if (t.includes("diskon") || t.includes("%") )    return "tag-green";
+  if (t.includes("baru") || t.includes("new"))     return "tag-blue";
+  if (t.includes("promo"))                         return "tag-pink";
+  return "tag-gray";
+}
+
+function renderProducts(cat){
+  const grid = document.getElementById("productGrid");
+  grid.innerHTML = "";
+  products[cat].forEach(p=>{
+    const tags = (p.tags||[]).slice(0,3)
+      .map(t=>`<span class="tag ${tagClass(t)}">${t}</span>`).join("");
+    const el = document.createElement("div");
+    el.className = "game-box";
+    el.innerHTML = `
+      <div class="tag-wrap">${tags}</div>
+      <div class="thumb-vertical" style="background-image:url('${p.img}')"></div>
+      <div style="text-align:center;padding:8px 0;color:#cfd9e8;font-size:13px;">${p.name}</div>`;
+    grid.appendChild(el);
+  });
+}
+
+/* ==== CATEGORY / SEARCH ==== */
+function filterCategory(cat){
+  document.querySelectorAll(".cat-btn").forEach(btn=>btn.classList.remove("active"));
+  event.target.classList.add("active");
+  renderProducts(cat);
+}
+function scrollCat(dir){
+  const bar=document.getElementById("categoryBar");
+  bar.scrollBy({left:dir*150,behavior:'smooth'});
+}
+function searchProduct(){
+  const q = document.getElementById("searchInput").value.toLowerCase();
+  const grid = document.getElementById("productGrid");
+  const currentCat = document.querySelector(".cat-btn.active").textContent.toLowerCase();
+  const catKey = Object.keys(products).find(k=>currentCat.includes(k)) || "topup";
+  const filtered = products[catKey].filter(p=>p.name.toLowerCase().includes(q));
+  grid.innerHTML = "";
+  filtered.forEach(p=>{
+    const tags = (p.tags||[]).slice(0,3)
+      .map(t=>`<span class="tag ${tagClass(t)}">${t}</span>`).join("");
+    const el = document.createElement("div");
+    el.className = "game-box";
+    el.innerHTML = `
+      <div class="tag-wrap">${tags}</div>
+      <div class="thumb-vertical" style="background-image:url('${p.img}')"></div>
+      <div style="text-align:center;padding:8px 0;color:#cfd9e8;font-size:13px;">${p.name}</div>`;
+    grid.appendChild(el);
+  });
+}
+
+/* init */
+renderProducts('topup');
+</script>
+</body>
+</html>
