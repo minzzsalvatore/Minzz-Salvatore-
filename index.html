@@ -1,19 +1,22 @@
-<!DOCTYPE html>  <html lang="id">  
-<head>  
-<meta charset="utf-8" />  
-<meta name="viewport" content="width=device-width,initial-scale=1" />  
-<title>MinzzStore - Top Up Game</title>  
-<style>  
-:root {  
-  --bg:#04070d;  
-  --accent:#009dff;  
-  --accent-dark:#003a6e;  
-  --card:#0a111b;  
-  --muted:#b8c7d9;  
-  font-family:"Poppins",sans-serif;  
-}  
-*{box-sizing:border-box;margin:0;padding:0}  
-body{background:var(--bg);color:#fff;overflow-x:hidden;scroll-behavior:smooth}  /* HEADER */
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MinzzStore - Top Up Game</title>
+<style>
+:root {
+  --bg:#04070d;
+  --accent:#009dff;
+  --accent-dark:#003a6e;
+  --card:#0a111b;
+  --muted:#b8c7d9;
+  font-family:"Poppins",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:#fff;overflow-x:hidden;scroll-behavior:smooth}
+
+/* HEADER */
 header{display:flex;justify-content:space-between;align-items:center;padding:18px 16px;position:sticky;top:0;z-index:50;background:rgba(5,8,14,.9);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.06)}
 .logo{display:flex;align-items:center;gap:10px;font-weight:700;color:#cfd9e8}
 .logo .mark{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-dark));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;box-shadow:0 0 18px rgba(0,157,255,.5);animation:pulse 3s infinite alternate}
@@ -40,72 +43,17 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
 .search{display:flex;align-items:center;background:var(--card);padding:12px 18px;border-radius:50px;margin:14px 18px;box-shadow:inset 0 0 10px rgba(0,157,255,.2)}
 .search input{flex:1;background:none;border:none;outline:none;color:#fff;font-size:15px}
 
-/* POPULER SECTION (fix ukuran & style) /
-.popular-section {
-background: linear-gradient(180deg, #06101d, #02060c);
-padding: 20px;
-border-radius: 20px;
-margin: 0 18px 25px;
-box-shadow: 0 0 25px rgba(0, 157, 255, 0.15);
-}
-.popular-section h2 {
-color: #fff;
-font-size: 20px;
-font-weight: 700;
-margin-bottom: 8px;
-display: flex;
-align-items: center;
-}
-.popular-section p {
-color: #9cb1d5;
-font-size: 14px;
-margin-bottom: 16px;
-}
-.popular-grid {
-display: grid;
-grid-template-columns: repeat(2, 1fr);
-gap: 12px;
-}
-.pop-card {
-display: flex;
-flex-direction: column;
-background: linear-gradient(135deg, #0b1320, #08111c);
-border-radius: 14px;
-overflow: hidden;
-border: 1px solid rgba(255,255,255,0.05);
-box-shadow: inset 0 0 10px rgba(0,157,255,0.05);
-transition: 0.3s;
-text-decoration: none;
-color: #fff;
-}
-.pop-card:hover {
-transform: translateY(-3px);
-box-shadow: 0 0 10px rgba(0,157,255,0.4);
-}
-.pop-card:active {
-transform: scale(0.97);
-box-shadow: 0 0 15px rgba(0,157,255,0.7);
-}
-.pop-img {
-width: 100%;
-height: 100px; / kecil dari sebelumnya biar pas */
-background-size: cover;
-background-position: center;
-}
-.pop-info {
-padding: 8px;
-text-align: center;
-}
-.pop-info h3 {
-font-size: 12px;
-font-weight: 700;
-color: #fff;
-margin-bottom: 3px;
-}
-.pop-info p {
-font-size: 11px;
-color: #8fa4be;
-}
+/* POPULER */
+.popular-section{background:linear-gradient(180deg,#06101d,#02060c);padding:20px;border-radius:20px;margin:0 18px 25px;box-shadow:0 0 25px rgba(0,157,255,.15)}
+.popular-section h2{color:#fff;font-size:20px;font-weight:700;margin-bottom:8px}
+.popular-section p{color:#9cb1d5;font-size:14px;margin-bottom:16px}
+.popular-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.pop-card{display:flex;flex-direction:column;background:linear-gradient(135deg,#0b1320,#08111c);border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.05);transition:0.3s;text-decoration:none;color:#fff}
+.pop-card:hover{transform:translateY(-3px);box-shadow:0 0 10px rgba(0,157,255,.4)}
+.pop-img{width:100%;height:100px;background-size:cover;background-position:center}
+.pop-info{padding:8px;text-align:center}
+.pop-info h3{font-size:12px;font-weight:700;color:#fff;margin-bottom:3px}
+.pop-info p{font-size:11px;color:#8fa4be}
 
 /* CATEGORY */
 .category-bar{display:flex;overflow-x:auto;gap:10px;margin:18px;padding:0 5px 6px;scrollbar-width:none}
@@ -116,123 +64,183 @@ color: #8fa4be;
 .games-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 18px 30px}
 .game-box{display:block;position:relative;border-radius:14px;overflow:hidden;text-decoration:none;color:#fff;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);transition:.3s}
 .game-box:hover{transform:translateY(-4px);box-shadow:0 0 20px rgba(0,157,255,.3)}
-.game-box:active{box-shadow:0 0 25px rgba(0,157,255,.9);transform:scale(0.96)}
 .thumb-vertical{width:100%;aspect-ratio:9/13;background-size:cover;background-position:center}
 
 /* FOOTER */
-footer{text-align:center;color:#7f8ca0;margin:30px 0;font-size:13px}
+footer{background:#06101d;padding:40px 20px;color:#b8c7d9;}
+footer a{color:#00aaff;text-decoration:none;}
+footer a:hover{color:#fff;text-shadow:0 0 6px #00aaff;}
+.footer-grid{max-width:1100px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;text-align:left;}
+.footer-grid h3{color:#fff;margin-bottom:10px;}
+.footer-grid p{font-size:14px;line-height:1.6;color:#a9b7c9;}
+.footer-grid ul{list-style:none;padding:0;margin:0;line-height:1.8;}
+.footer-bottom{text-align:center;color:#8ea4c2;font-size:13px;margin-top:30px;border-top:1px solid rgba(255,255,255,0.1);padding-top:15px;}
 </style>
+</head>
 
-</head>  <body>  
-<header>  
-  <div class="logo"><div class="mark">MS</div><span>MinzzStore</span></div>  
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>  
-</header>  <!-- Drawer Menu -->  <div class="nav-backdrop" id="navBackdrop" onclick="toggleMenu()"></div>  
-<div class="nav-menu" id="navMenu">  
-  <div class="nav-header"><div class="mark">MS</div><span>MinzzStore</span></div>  
-  <a href="index.html" class="nav-item">🏠 Beranda</a>  
-  <a href="status.html" class="nav-item">🔍 Cek Transaksi</a>  
-  <a href="#" class="nav-item">🏆 Leaderboard</a>  
-  <a href="#" class="nav-item">📰 Artikel</a>  
-  <a href="#" class="nav-item">💲 Daftar Harga</a>  
-  <a href="#" class="nav-item">🧮 Kalkulator ML</a>  
-  <div class="nav-divider"></div>  
-  <a href="#" class="nav-item">🔑 Masuk</a>  
-  <a href="#" class="nav-item">👤 Daftar</a>  
-</div>  <main>  
-  <div class="banner"></div>  
-  <div class="search">  
-    <input id="searchInput" type="search" placeholder="Cari produk yang kamu inginkan..." oninput="searchProduct()" />  
-  </div>    <!-- POPULER SEKARANG -->    <section class="popular-section">  
-    <h2>🔥 PALING POPULER!</h2>  
-    <p>Berikut adalah produk yang paling populer saat ini.</p>  
-    <div class="popular-grid" id="popularGrid"></div>  
-  </section>    <!-- KATEGORI -->    <div class="category-bar" id="categoryBar">  
-    <button class="cat-btn active" onclick="filterCategory('topup',event)">Topup Game</button>  
-    <button class="cat-btn" onclick="filterCategory('mlbb',event)">Joki MLBB</button>  
-    <button class="cat-btn" onclick="filterCategory('voucher',event)">Voucher</button>  
-    <button class="cat-btn" onclick="filterCategory('apps',event)">Apps Premium</button>  
-  </div>    <div class="games-grid" id="productGrid"></div>  
-</main>  <footer>© 2025 MinzzStore. All rights reserved.</footer>  <script>  
-function toggleMenu(){  
-  const menu=document.getElementById('navMenu');  
-  const backdrop=document.getElementById('navBackdrop');  
-  const active=menu.classList.toggle('active');  
-  backdrop.classList.toggle('active',active);  
-}  
-  
-const products={  
-  topup:[  
-    {name:"Mobile Legends (MY)",img:"https://d.top4top.io/p_3592ov5d30.png",link:"mlmy.html"},  
-    {name:"Gift Skin Mobile Legends",img:"https://i.ibb.co/FsKjrpT/mlbb2.jpg",link:"mlid.html"},  
-    {name:"Room Tournament",img:"https://i.ibb.co/bJZBdPj/skin.jpg",link:"mlglobal.html"},  
-    {name:"Free Fire",img:"https://i.ibb.co/BTVb7YP/freefire.jpg",link:"ffs2.html"},  
-    {name:"Gift Item",img:"https://i.ibb.co/PhVDTKj/mlbb.jpg",link:"mlph.html"},  
-    {name:"ITEM LIMITED",img:"https://i.ibb.co/V3mNq6W/pubg.jpg",link:"pubg.html"}  
-  ],  
-  mlbb:[  
-    {name:"Joki Rank",img:"https://i.ibb.co/PhVDTKj/mlbb.jpg",link:"mlmy.html"},  
-    {name:"Diamond MLBB",img:"https://i.ibb.co/FsKjrpT/mlbb2.jpg",link:"mlid.html"},  
-    {name:"Skin Collector",img:"https://i.ibb.co/bJZBdPj/skin.jpg",link:"mlglobal.html"}  
-  ],  
-  voucher:[  
-    {name:"Google Play",img:"https://i.ibb.co/4T7qhjh/gp-voucher.jpg",link:"ffs2.html"},  
-    {name:"Garena Shell",img:"https://i.ibb.co/LCdztJr/garena.jpg",link:"pubg.html"}  
-  ],  
-  apps:[  
-    {name:"Spotify Premium",img:"https://i.ibb.co/hCtfK3F/spotify.jpg",link:"mlmy.html"},  
-    {name:"Netflix Premium",img:"https://i.ibb.co/3c4G07C/netflix.jpg",link:"mlid.html"}  
-  ]  
-};  
-  
-function renderPopular(){  
-  const grid=document.getElementById("popularGrid");  
-  grid.innerHTML="";  
-  products.topup.forEach(p=>{  
-    grid.innerHTML+=`  
-    <a href="${p.link}" class="pop-card">  
-      <div class="pop-img" style="background-image:url('${p.img}')"></div>  
-      <div class="pop-info">  
-        <h3>${p.name}</h3>  
-        <p>Moonton</p>  
-      </div>  
-    </a>`;  
-  });  
-}  
-  
-function renderProducts(cat){  
-  const grid=document.getElementById("productGrid");  
-  grid.innerHTML="";  
-  products[cat].forEach(p=>{  
-    grid.innerHTML+=`  
-      <a href="${p.link}" class="game-box">  
-        <div class="thumb-vertical" style="background-image:url('${p.img}')"></div>  
-      </a>`;  
-  });  
-}  
-  
-function filterCategory(cat,e){  
-  document.querySelectorAll(".cat-btn").forEach(b=>b.classList.remove("active"));  
-  e.target.classList.add("active");  
-  renderProducts(cat);  
-}  
-  
-function searchProduct(){  
-  const q=document.getElementById("searchInput").value.toLowerCase();  
-  const cat=document.querySelector(".cat-btn.active").textContent.toLowerCase();  
-  const key=cat.includes("mlbb")?"mlbb":cat.includes("voucher")?"voucher":cat.includes("apps")?"apps":"topup";  
-  const filtered=products[key].filter(p=>p.name.toLowerCase().includes(q));  
-  const grid=document.getElementById("productGrid");  
-  grid.innerHTML="";  
-  filtered.forEach(p=>{  
-    grid.innerHTML+=`  
-      <a href="${p.link}" class="game-box">  
-        <div class="thumb-vertical" style="background-image:url('${p.img}')"></div>  
-      </a>`;  
-  });  
-}  
-  
-renderPopular();  
-renderProducts('topup');  
-</script>  </body>  
+<body>
+<header>
+  <div class="logo"><div class="mark">MS</div><span>Minzz Salvatore</span></div>
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+</header>
+
+<!-- Drawer Menu -->
+<div class="nav-backdrop" id="navBackdrop" onclick="toggleMenu()"></div>
+<div class="nav-menu" id="navMenu">
+  <div class="nav-header"><div class="mark">MS</div><span>MinzzStore</span></div>
+  <a href="dashbord.html" class="nav-item">🏠 Beranda</a>
+  <a href="status.html" class="nav-item">🔍 Cek Transaksi</a>
+  <a href="#" class="nav-item">🏆 Leaderboard</a>
+  <a href="#" class="nav-item">📰 Artikel</a>
+  <a href="#" class="nav-item">💲 Daftar Harga</a>
+  <a href="#" class="nav-item">🧮 Kalkulator ML</a>
+  <div class="nav-divider"></div>
+  <a href="login.html" class="nav-item">🔑 Masuk</a>
+  <a href="daftar.html" class="nav-item">👤 Daftar</a>
+</div>
+
+<main>
+  <div class="banner"></div>
+  <div class="search">
+    <input id="searchInput" type="search" placeholder="Cari produk yang kamu inginkan..." oninput="searchProduct()" />
+  </div>
+
+  <!-- POPULER -->
+  <section class="popular-section">
+    <h2>🔥 PALING POPULER!</h2>
+    <p>Berikut adalah produk yang paling populer saat ini.</p>
+    <div class="popular-grid" id="popularGrid"></div>
+  </section>
+
+  <!-- KATEGORI -->
+  <div class="category-bar" id="categoryBar">
+    <button class="cat-btn active" onclick="filterCategory('topup',event)">Topup Game</button>
+    <button class="cat-btn" onclick="filterCategory('mlbb',event)">Joki MLBB</button>
+    <button class="cat-btn" onclick="filterCategory('voucher',event)">Voucher</button>
+    <button class="cat-btn" onclick="filterCategory('apps',event)">Apps Premium</button>
+  </div>
+
+  <div class="games-grid" id="productGrid"></div>
+</main>
+
+<!-- FOOTER FIX (Tentang dipindah ke tengah) -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <img src="https://f.top4top.io/p_3592x38860.png" alt="Minzz Logo" style="width:120px;margin-bottom:10px;">
+      <p>MinzzStore adalah platform top-up game terpercaya yang menawarkan harga terbaik untuk berbagai game populer seperti Mobile Legends, Free Fire, PUBG Mobile, dan lainnya. Proses cepat, aman, dan terpercaya — hanya dengan beberapa klik!</p>
+    </div>
+
+    <div>
+      <h3>Menu Cepat</h3>
+      <ul>
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="status.html">Cek Pesanan</a></li>
+        <li><a href="#">Daftar Harga</a></li>
+        <li><a href="#">Review</a></li>
+        <li><a href="#">Kalkulator ML</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Tentang</h3>
+      <ul>
+        <li><a href="#">Hubungi Kami</a></li>
+        <li><a href="#">Syarat & Ketentuan</a></li>
+        <li><a href="#">Kebijakan Privasi</a></li>
+        <li><a href="#">Pertanyaan Umum</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Bantuan</h3>
+      <p>📞 +60 14-616 6722<br>Kedah, Malaysia<br>✉️ <a href="mailto:info@minzzstore.com">info@minzzstore.com</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">Copyright © 2025 MinzzStore - All Rights Reserved</div>
+</footer>
+
+<script>
+function toggleMenu(){
+  const menu=document.getElementById('navMenu');
+  const backdrop=document.getElementById('navBackdrop');
+  const active=menu.classList.toggle('active');
+  backdrop.classList.toggle('active',active);
+}
+
+const products={
+  topup:[
+    {name:"Mobile Legends (MY)",img:"https://d.top4top.io/p_3592ov5d30.png",link:"mlmy.html"},
+    {name:"Gift Skin Mobile Legends",img:"https://i.ibb.co/FsKjrpT/mlbb2.jpg",link:"mlid.html"},
+    {name:"Room Tournament",img:"https://i.ibb.co/bJZBdPj/skin.jpg",link:"mlglobal.html"},
+    {name:"Free Fire",img:"https://i.ibb.co/BTVb7YP/freefire.jpg",link:"ffs2.html"},
+    {name:"Gift Item",img:"https://i.ibb.co/PhVDTKj/mlbb.jpg",link:"mlph.html"},
+    {name:"ITEM LIMITED",img:"https://i.ibb.co/V3mNq6W/pubg.jpg",link:"pubg.html"}
+  ],
+  mlbb:[
+    {name:"Joki Rank",img:"https://i.ibb.co/PhVDTKj/mlbb.jpg",link:"mlmy.html"},
+    {name:"Diamond MLBB",img:"https://i.ibb.co/FsKjrpT/mlbb2.jpg",link:"mlid.html"},
+    {name:"Skin Collector",img:"https://i.ibb.co/bJZBdPj/skin.jpg",link:"mlglobal.html"}
+  ],
+  voucher:[
+    {name:"Google Play",img:"https://i.ibb.co/4T7qhjh/gp-voucher.jpg",link:"ffs2.html"},
+    {name:"Garena Shell",img:"https://i.ibb.co/LCdztJr/garena.jpg",link:"pubg.html"}
+  ],
+  apps:[
+    {name:"Spotify Premium",img:"https://i.ibb.co/hCtfK3F/spotify.jpg",link:"mlmy.html"},
+    {name:"Netflix Premium",img:"https://i.ibb.co/3c4G07C/netflix.jpg",link:"mlid.html"}
+  ]
+};
+
+function renderPopular(){
+  const grid=document.getElementById("popularGrid");
+  grid.innerHTML="";
+  products.topup.forEach(p=>{
+    grid.innerHTML+=`
+    <a href="${p.link}" class="pop-card">
+      <div class="pop-img" style="background-image:url('${p.img}')"></div>
+      <div class="pop-info">
+        <h3>${p.name}</h3>
+        <p>Moonton</p>
+      </div>
+    </a>`;
+  });
+}
+
+function renderProducts(cat){
+  const grid=document.getElementById("productGrid");
+  grid.innerHTML="";
+  products[cat].forEach(p=>{
+    grid.innerHTML+=`
+      <a href="${p.link}" class="game-box">
+        <div class="thumb-vertical" style="background-image:url('${p.img}')"></div>
+      </a>`;
+  });
+}
+
+function filterCategory(cat,e){
+  document.querySelectorAll(".cat-btn").forEach(b=>b.classList.remove("active"));
+  e.target.classList.add("active");
+  renderProducts(cat);
+}
+
+function searchProduct(){
+  const q=document.getElementById("searchInput").value.toLowerCase();
+  const cat=document.querySelector(".cat-btn.active").textContent.toLowerCase();
+  const key=cat.includes("mlbb")?"mlbb":cat.includes("voucher")?"voucher":cat.includes("apps")?"apps":"topup";
+  const filtered=products[key].filter(p=>p.name.toLowerCase().includes(q));
+  const grid=document.getElementById("productGrid");
+  grid.innerHTML="";
+  filtered.forEach(p=>{
+    grid.innerHTML+=`
+      <a href="${p.link}" class="game-box">
+        <div class="thumb-vertical" style="background-image:url('${p.img}')"></div>
+      </a>`;
+  });
+}
+
+renderPopular();
+renderProducts('topup');
+</script>
+</body>
 </html>
